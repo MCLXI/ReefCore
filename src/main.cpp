@@ -1831,7 +1831,7 @@ CAmount GetMainBlockReward(int nPrevHeight) {
         blockReward = 5;
     } else if (nPrevHeight <= 5000) {
         blockReward = 5000;
-    } else if (nPrevHeight<= 9000) {
+    } else if (nPrevHeight <= 7000) {
         blockReward = 4250;
     } else if (nPrevHeight <= 14000){
         blockReward = 5750;
@@ -5729,7 +5729,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
         CAddress addrFrom;
         uint64_t nNonce = 1;
         vRecv >> pfrom->nVersion >> pfrom->nServices >> nTime >> addrMe;
-	if (nTime > 1527891531)
+	if (nTime > 1527772569)
 	{
         if (pfrom->nVersion < 70207)
         {
