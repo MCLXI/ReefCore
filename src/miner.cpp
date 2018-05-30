@@ -288,7 +288,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
 
 //pay founders reward
         //if ((nHeight > 0) && (nHeight <= Params().GetConsensus().GetLastFoundersRewardBlockHeight())) {
-        if (nHeight < 9000)
+        if (nHeight < 7000)
 {
 	if(Params().NetworkIDString() =="test") {
             printf("Testnet: Block %d",pindexPrev->nHeight);
