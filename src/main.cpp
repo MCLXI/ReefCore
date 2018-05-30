@@ -1063,7 +1063,7 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state)
 
           	if (tx.vout[0].nValue < (0.1 * tx.vout[2].nValue))
             {
-                return state.DoS(100, false, REJECT_INVALID, "bad-txns-vout-fundoutputtoosmall");        $
+                return state.DoS(100, false, REJECT_INVALID, "bad-txns-vout-fundoutputtoosmall");
             }
 		}
         }
@@ -1831,7 +1831,7 @@ CAmount GetMainBlockReward(int nPrevHeight) {
         blockReward = 5;
     } else if (nPrevHeight <= 5000) {
         blockReward = 5000;
-    } else if nPrevHeight<= 9000 {
+    } else if (nPrevHeight<= 9000) {
         blockReward = 4250;
     } else if (nPrevHeight <= 14000){
         blockReward = 5750;
@@ -1849,7 +1849,7 @@ CAmount GetMainBlockReward(int nPrevHeight) {
         blockReward =  1875;
     } else if (nPrevHeight <= 10000000){
         blockReward =  1250;
-    } else
+    } else {
         blockReward =  625;
     }
     return blockReward * COIN;
@@ -1901,8 +1901,8 @@ return GetMainBlockReward(nPrevHeight);
         nPOW =  5000 * COIN;
         blockReward = nPOW * 0.85;
 
-    }*/
-/*if (nPrevHeight == 0)
+    }
+if (nPrevHeight == 0)
 {
 	return 50 * COIN;
 }
@@ -1959,7 +1959,7 @@ if (nPrevHeight == 15) {
     }
 
     return blockReward;
-  /*  if (nPrevHeight == 0) {
+    if (nPrevHeight == 0) {
         return 3400000 * COIN;
     }
     if (nPrevHeight < 800) {
@@ -1973,8 +1973,8 @@ if (nPrevHeight == 15) {
         nSubsidy -= nSubsidy * 0.25;
     }
 
-    return fSuperblockPartOnly ? 0 : nSubsidy; */
-/*}
+    return fSuperblockPartOnly ? 0 : nSubsidy; 
+}
 CAmount getblkreward(int nPrevHeight){
 if (nPrevHeight > 8999)
 {
@@ -1988,8 +1988,8 @@ return GetMainBlockReward(nPrevHeight);
         nPOW =  5000 * COIN;
         blockReward = nPOW;
         return blockReward;
-    }*/
- /*   if (nPrevHeight== 0 && nPrevHeight <= 500){
+    }
+    if (nPrevHeight== 0 && nPrevHeight <= 500){
         nPOW = 0 * COIN;
         blockReward = nPOW;
     }
@@ -1997,8 +1997,8 @@ return GetMainBlockReward(nPrevHeight);
         nPOW =  5000 * COIN;
         blockReward = nPOW;
     }
-    */
-/*if (nPrevHeight == 0) {
+    
+if (nPrevHeight == 0) {
 	blockReward = 0;
 }
 if (nPrevHeight == 1) {
@@ -3220,7 +3220,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     return true;
 }
 bool CheckDevFundPayment(const CTransaction& txNew, int nBlockHeight) {
-    if (nBlockHeight >= Params().GetConsensus().nDevFundPaymentsStartBlock && !IsDevFundTransactionValid(txNew, nBlockHeight)) {
+    if (nBlockHeight >= 10000 && !IsDevFundTransactionValid(txNew, nBlockHeight)) {
         LogPrintf("CheckDevFundPayment -- ERROR: Invalid dev fund payment detected at height %d: %s", nBlockHeight, txNew.ToString());
         
         if (sporkManager.IsSporkActive(SPORK_16_DEVFUND_PAYMENT_ENFORCEMENT)) {

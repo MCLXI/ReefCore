@@ -264,6 +264,8 @@ CAmount GetFoundersReward(int nHeight);
 CAmount getblkreward(int nPrevHeight);
 CAmount GetTestBlockReward(int nHeight);
 CAmount GetMainBlockReward(int nHeight);
+CAmount GetDevFundPayment(int nHeight, CAmount blockValue);
+void FillDevFundBlockPayee(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, CTxOut& txoutDevFundRet);
 /**
  * Prune block and undo files (blk???.dat and undo???.dat) so that the disk space used is less than a user-defined target.
  * The user sets the target (in MB) on the command line or in config file.  This will be run on startup and whenever new

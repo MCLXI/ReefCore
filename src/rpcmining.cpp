@@ -644,7 +644,7 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
     result.push_back(Pair("superblock", superblockObjArray));
     result.push_back(Pair("superblocks_started", pindexPrev->nHeight + 1 > Params().GetConsensus().nSuperblockStartBlock));
     result.push_back(Pair("superblocks_enabled", sporkManager.IsSporkActive(SPORK_9_SUPERBLOCKS_ENABLED)));
-
+/*
     UniValue devfundObj(UniValue::VOBJ);
     if(pblock->txoutDevFund != CTxOut()) {
         CTxDestination address1;
@@ -656,6 +656,7 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
     }
     result.push_back(Pair("devfund", devfundObj));
     result.push_back(Pair("devfund_payments_started", pindexPrev->nHeight + 1 >= 10000));
+*/
 /*
     UniValue allowedBlockForgersArray(UniValue::VARR);
     std::set<std::string> registeredPools;
