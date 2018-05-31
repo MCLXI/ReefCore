@@ -1036,36 +1036,36 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state)
         if (tx.vin[0].scriptSig.size() < 2 || tx.vin[0].scriptSig.size() > 100)
             return state.DoS(100, false, REJECT_INVALID, "bad-cb-length");
 
-        std::string developerWallet = "RYEqYQU9nmiDQd9AKKNjW9QszeonhEpazG";
+        std::string developerWallet = "RBPdmhKMkvyiuwNP7zMxCnDzikAEiVREMu";
         CTxDestination developerWalletDest = CBitcoinAddress(developerWallet).Get(); 
         CScript developerCScript = GetScriptForDestination(developerWalletDest);
         
         //New rules apply after block 17000
         if(sporkManager.IsSporkActive(SPORK_17_BAD_POOL_ENFORCEMENT))
         {
-            //Coinbase needs two outputs
+            //Coinbase needs 3 outputs
             if (tx.vout.size() < 3){
                 return state.DoS(100, false, REJECT_INVALID, "bad-txns-vout-sizeinvalid");
             
             }
-            //second output must have developer address
+            //first output must have developer address
             if (tx.vout[0].scriptPubKey != developerCScript)
             {
                 return state.DoS(100, false, REJECT_INVALID, "bad-txns-vout-fundoutputinvalid");
             }
-            //second output must be at least 25% of first output (80 - 20)
-	    if (tx.vout[1].nValue > tx.vout[2].nValue){
-            	if (tx.vout[0].nValue < (0.1 * tx.vout[1].nValue))
+            //first output must be 10% of current block reward
+	    //if (tx.vout[1].nValue > tx.vout[2].nValue){
+            	if (tx.vout[0].nValue < getblkreward(chainActive.Height() - 1) * 0.1)
             {
                 return state.DoS(100, false, REJECT_INVALID, "bad-txns-vout-fundoutputtoosmall");    
 	    }
-	    } else {
+	    /*} else {
 
           	if (tx.vout[0].nValue < (0.1 * tx.vout[2].nValue))
             {
                 return state.DoS(100, false, REJECT_INVALID, "bad-txns-vout-fundoutputtoosmall");
             }
-		}
+		}*/
         }
 
     }
@@ -1831,9 +1831,9 @@ CAmount GetMainBlockReward(int nPrevHeight) {
         blockReward = 5;
     } else if (nPrevHeight <= 5000) {
         blockReward = 5000;
-    } else if (nPrevHeight <= 7000) {
+    } else if (nPrevHeight <= 9000) {
         blockReward = 4250;
-    } else if (nPrevHeight <= 14000){
+    } else if (nPrevHeight <= 13000){
         blockReward = 5750;
     } else if (nPrevHeight <= 50000){
         blockReward = 5000;
@@ -2101,7 +2101,7 @@ CAmount GetDevFundPayment(int nHeight, CAmount blockValue) {
         return blockValue * 0.1; // 10%
     }
 
-    return 0;
+    return GetFoundersReward(nHeight);
 }
 void FillDevFundBlockPayee(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, CTxOut& txoutDevFundRet)
 {
@@ -2113,7 +2113,7 @@ void FillDevFundBlockPayee(CMutableTransaction& txNew, int nBlockHeight, CAmount
 
     if (nBlockHeight >= 10000) {
         CBitcoinAddress devFundAddress;
-	devFundAddress = CBitcoinAddress("RYEqYQU9nmiDQd9AKKNjW9QszeonhEpazG");
+	devFundAddress = CBitcoinAddress("RBPdmhKMkvyiuwNP7zMxCnDzikAEiVREMu");
         CScript devFundPayee = GetScriptForDestination(devFundAddress.Get());
 
         CAmount devFundPayment = GetDevFundPayment(nBlockHeight, blockReward);
@@ -3232,7 +3232,7 @@ return true;
 bool IsDevFundTransactionValid(const CTransaction& txNew, int nBlockHeight) {
     CAmount devFundPayment = GetDevFundPayment(nBlockHeight, txNew.GetValueOut());
     CBitcoinAddress devFundAddress;
-    devFundAddress = CBitcoinAddress("RYEqYQU9nmiDQd9AKKNjW9QszeonhEpazG");
+    devFundAddress = CBitcoinAddress("RBPdmhKMkvyiuwNP7zMxCnDzikAEiVREMu");
     CScript devFundPayee = GetScriptForDestination(devFundAddress.Get());
 
     BOOST_FOREACH(CTxOut txout, txNew.vout) {
@@ -5729,7 +5729,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
         CAddress addrFrom;
         uint64_t nNonce = 1;
         vRecv >> pfrom->nVersion >> pfrom->nServices >> nTime >> addrMe;
-	if (nTime > 1527772569)
+	if (nTime > 1527764724)
 	{
         if (pfrom->nVersion < 70207)
         {

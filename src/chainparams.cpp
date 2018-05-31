@@ -84,8 +84,9 @@ public:
         consensus.nMajorityWindow = 1000;
         consensus.BIP34Height = 227931; // FIX
         consensus.BIP34Hash = uint256S("0x000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8"); // FIX
-        consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
-        consensus.nPowTargetTimespan = 1 * 60; // Reef: every blocks
+        //consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
+        consensus.powLimit = uint256S("000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+	consensus.nPowTargetTimespan = 1 * 60; // Reef: every blocks
         consensus.nPowTargetSpacing = 1 * 60; // Reef: 1 minutes
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
@@ -115,7 +116,7 @@ public:
         pchMessageStart[2] = 0x9c;
         pchMessageStart[3] = 0xd5;
         vAlertPubKey = ParseHex("044513449073a8efe161dc42e7c07c61c4a8f59297dc8ebacbc2f77345084d058399022bc6a0db0719739f183d14b04893fb78c3b9bd9a3f88ecf8ea06adae99fe");
-        nDefaultPort = 9857;
+        nDefaultPort = 9021;
         nMaxTipAge = 1.5 * 60 * 60; // ~36 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nPruneAfterHeight = 100000;
 
@@ -194,7 +195,7 @@ public:
 
         nPoolMaxTransactions = 3;
         nFulfilledRequestExpireTime = 60*60; // fulfilled requests expire in 1 hour
-        strSporkPubKey = "023b03f501578f0b2c2004f2d01788da18b901d69a5698e94a72b5d30adc41daec";
+        strSporkPubKey = "0369e8753b6b76031457f95a210246e3b671e551943035ce6eb42c9726c3c9043f";
         strMasternodePaymentsPubKey = "041fda8a1eff0a55d4d5c2d10f426e9c204d8faa228e3bbbaccd716a0db59bbfbe15dc17975f41e554ad551316b97586ddf5bec909a9fc3fc36c17a9611294fcf8";
 
         checkpointData = (CCheckpointData) {
