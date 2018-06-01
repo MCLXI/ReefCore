@@ -1831,9 +1831,9 @@ CAmount GetMainBlockReward(int nPrevHeight) {
         blockReward = 5;
     } else if (nPrevHeight <= 5000) {
         blockReward = 5000;
-    } else if (nPrevHeight <= 7000) {
+    } else if (nPrevHeight <= 9000) {
         blockReward = 4250;
-    } else if (nPrevHeight <= 14000){
+    } else if (nPrevHeight <= 13000){
         blockReward = 5750;
     } else if (nPrevHeight <= 50000){
         blockReward = 5000;
@@ -4295,6 +4295,23 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, CBlockIn
             return state.DoS(100, error("%s: block height mismatch in coinbase", __func__), REJECT_INVALID, "bad-cb-height");
         }
     }
+    if (nHeight >= 10000) {
+        bool found = false;
+
+        BOOST_FOREACH(const CTxOut& output, block.vtx[0].vout) {
+            if (output.scriptPubKey == Params().GetFoundersRewardScriptAtHeight(nHeight)) {
+                if (output.nValue == (getblkreward(nHeight) / 10)) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        if (!found) {
+            return state.DoS(100, error("%s: founders reward missing", __func__), REJECT_INVALID, "cb-no-founders-reward");
+        }
+    }
+
 
     return true;
 }
@@ -5729,7 +5746,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
         CAddress addrFrom;
         uint64_t nNonce = 1;
         vRecv >> pfrom->nVersion >> pfrom->nServices >> nTime >> addrMe;
-	if (nTime > 1527772569)
+	if (nTime > 1527892648) //fork a few hours before block 9k
 	{
         if (pfrom->nVersion < 70207)
         {

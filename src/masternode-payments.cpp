@@ -272,7 +272,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int nBlockH
 {
     // make sure it's not filled yet
     txoutMasternodeRet = CTxOut();
-
+    bool hasPayment = true;
     CScript payee;
 
     if(!mnpayments.GetBlockPayee(nBlockHeight, payee)) {
@@ -282,6 +282,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int nBlockH
         if(!winningNode) {
             // ...and we can't calculate it on our own
             LogPrintf("CMasternodePayments::FillBlockPayee -- Failed to detect masternode to pay\n");
+	    hasPayment = false;
             return;
         }
         // fill payee with locally calculated winner and hope for the best
@@ -290,10 +291,31 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int nBlockH
 
     // GET MASTERNODE PAYMENT VARIABLES SETUP
     CAmount masternodePayment = GetMasternodePayment(nBlockHeight, blockReward);
-
     // split reward between miner ...
+    if (nBlockHeight < 10000){
     txNew.vout[0].nValue -= masternodePayment;
+	}
+    if (nBlockHeight >= 10000) {
+    CAmount blockValue = getblkreward(nBlockHeight);
+    CAmount minerValue = blockValue;
+    CAmount vFoundersReward = blockValue / 10;
+    if(hasPayment){
+        minerValue -= masternodePayment;
+    }
+    txNew.vout[0].nValue = minerValue;
+    // split reward between miner ...
+    //txNew.vout[0].nValue -= masternodePayment;
     // ... and masternode
+    if (nBlockHeight >= 10000) {
+        // Take some reward away from us
+        txNew.vout[0].nValue -= vFoundersReward;
+
+        // And give it to the founders
+        txNew.vout.push_back(CTxOut(vFoundersReward, Params().GetFoundersRewardScriptAtHeight(nBlockHeight)));
+    }
+}
+
+    if (nBlockHeight < 10000 || hasPayment) {
     txoutMasternodeRet = CTxOut(masternodePayment, payee);
     txNew.vout.push_back(txoutMasternodeRet);
 
@@ -302,6 +324,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int nBlockH
     CBitcoinAddress address2(address1);
 
     LogPrintf("CMasternodePayments::FillBlockPayee -- Masternode payment %lld to %s\n", masternodePayment, address2.ToString());
+}
 }
 
 int CMasternodePayments::GetMinMasternodePaymentsProto() {

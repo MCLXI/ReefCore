@@ -43,7 +43,7 @@ static const int64_t SPORK_10_MASTERNODE_PAY_UPDATED_NODES_DEFAULT      = 407090
 static const int64_t SPORK_12_RECONSIDER_BLOCKS_DEFAULT                 = 0;            // 0 BLOCKS
 static const int64_t SPORK_13_OLD_SUPERBLOCK_FLAG_DEFAULT               = 4070908800ULL;// OFF
 static const int64_t SPORK_14_REQUIRE_SENTINEL_FLAG_DEFAULT             = 4070908800ULL;// OFF
-static const int64_t SPORK_16_DEVFUND_PAYMENT_ENFORCEMENT_DEFAULT       = 1527832569;// ON
+static const int64_t SPORK_16_DEVFUND_PAYMENT_ENFORCEMENT_DEFAULT       = 4070908800ULL;// Off
 static const int64_t SPORK_17_BAD_POOL_ENFORCEMENT_DEFAULT              = 4070908800ULL;//OFF-MCLXI BetaTM
 
 extern std::map<uint256, CSporkMessage> mapSporks;

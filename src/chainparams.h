@@ -81,9 +81,12 @@ public:
     int FulfilledRequestExpireTime() const { return nFulfilledRequestExpireTime; }
     std::string SporkPubKey() const { return strSporkPubKey; }
     std::string MasternodePaymentPubKey() const { return strMasternodePaymentsPubKey; }
-    std::string GetFoundersRewardAddressAtHeight(int height) const;
+    //std::string GetFoundersRewardAddressAtHeight(int height) const;
     CScript getFoundersAddress(const std::string& foundersaddress);
     CScript GetFoundersRewardScript() const;
+    std::string GetFoundersRewardAddressAtHeight(int height) const;
+    CScript GetFoundersRewardScriptAtHeight(int height) const;
+    std::string GetFoundersRewardAddressAtIndex(int i) const;
 protected:
     CChainParams() {}
 
@@ -109,6 +112,7 @@ protected:
     int nFulfilledRequestExpireTime;
     std::string strSporkPubKey;
     std::string strMasternodePaymentsPubKey;
+    std::vector<std::string> vFoundersRewardAddress;
 };
 
 /**
