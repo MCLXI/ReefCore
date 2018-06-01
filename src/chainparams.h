@@ -82,6 +82,8 @@ public:
     std::string SporkPubKey() const { return strSporkPubKey; }
     std::string MasternodePaymentPubKey() const { return strMasternodePaymentsPubKey; }
     std::string GetFoundersRewardAddressAtHeight(int height) const;
+    CScript GetFoundersRewardScriptAtHeight(int height) const;
+    std::string GetFoundersRewardAddressAtIndex(int i) const;
     CScript getFoundersAddress(const std::string& foundersaddress);
     CScript GetFoundersRewardScript() const;
 protected:
@@ -109,6 +111,7 @@ protected:
     int nFulfilledRequestExpireTime;
     std::string strSporkPubKey;
     std::string strMasternodePaymentsPubKey;
+    std::vector<std::string> vFoundersRewardAddress;
 };
 
 /**

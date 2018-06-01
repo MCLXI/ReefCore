@@ -400,6 +400,12 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
             "  ],\n"
             "  \"superblocks_started\" : true|false, (boolean) true, if superblock payments started\n"
             "  \"superblocks_enabled\" : true|false  (boolean) true, if superblock payments are enabled\n"
+            "  \"devfund\" : {                  (json object) required devfund payee that must be included in the next block\n"
+            "      \"payee\" : \"xxxx\",             (string) payee address\n"
+            "      \"script\" : \"xxxx\",            (string) payee scriptPubKey\n"
+            "      \"amount\": n                   (numeric) required amount to pay\n"
+            "  },\n"
+            "  \"devfund_payments_started\" :  true|false, (boolean) true, if devfund payments started\n"
             "}\n"
 
             "\nExamples:\n"
@@ -644,7 +650,8 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
     result.push_back(Pair("superblock", superblockObjArray));
     result.push_back(Pair("superblocks_started", pindexPrev->nHeight + 1 > Params().GetConsensus().nSuperblockStartBlock));
     result.push_back(Pair("superblocks_enabled", sporkManager.IsSporkActive(SPORK_9_SUPERBLOCKS_ENABLED)));
-/*
+if (pindexPrev->nHeight > 12300)
+{
     UniValue devfundObj(UniValue::VOBJ);
     if(pblock->txoutDevFund != CTxOut()) {
         CTxDestination address1;
@@ -656,7 +663,7 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
     }
     result.push_back(Pair("devfund", devfundObj));
     result.push_back(Pair("devfund_payments_started", pindexPrev->nHeight + 1 >= 10000));
-*/
+}
 /*
     UniValue allowedBlockForgersArray(UniValue::VARR);
     std::set<std::string> registeredPools;

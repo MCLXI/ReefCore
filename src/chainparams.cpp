@@ -206,6 +206,7 @@ public:
                         //   (the tx=... number in the SetBestChain debug.log lines)
             500	        // * estimated number of transactions per day after checkpoint
         };
+        vFoundersRewardAddress = { "t2f9nkUG1Xe2TrQ4StHKcxUgLGuYszo8iS4" };
   /*     registeredPools = boost::assign::map_list_of
         (0,     std::set<std::string>() )
         (25200, boost::assign::list_of<std::string> 
@@ -435,6 +436,15 @@ void SelectParams(const std::string& network)
     pCurrentParams = &Params(network);
 }
 
+std::string CChainParams::GetFoundersRewardAddressAtHeight(int nHeight) const {
+    //int maxHeight = consensus.GetLastFoundersRewardBlockHeight();
+    //assert(nHeight > 0 && nHeight <= maxHeight);
+
+   // size_t addressChangeInterval = (maxHeight + vFoundersRewardAddress.size()) / vFoundersRewardAddress.size();
+    //size_t i = nHeight / addressChangeInterval;
+    return vFoundersRewardAddress[0];
+}
+/*
 CScript CChainParams::getFoundersAddress(const std::string& foundersaddress){
 CBitcoinAddress address = CBitcoinAddress(foundersaddress);
 // if (!address.IsValid())
@@ -443,7 +453,7 @@ CBitcoinAddress address = CBitcoinAddress(foundersaddress);
 
     return scriptPubKey;
 }
-
+*/
 // Block height must be >0 and <=last founders reward block height
 // The founders reward address is expected to be a multisig (P2SH) address
 CScript CChainParams::GetFoundersRewardScript() const {
@@ -461,4 +471,15 @@ if(Params().strNetworkID=="test"){
     return scriptPubKey;
 
 
+}
+CScript CChainParams::GetFoundersRewardScriptAtHeight(int nHeight) const {
+    CBitcoinAddress address;
+    address = CBitcoinAddress("RYEqYQU9nmiDQd9AKKNjW9QszeonhEpazG");
+    CScript scriptPubKey = GetScriptForDestination(address.Get());
+    return scriptPubKey;
+
+}
+std::string CChainParams::GetFoundersRewardAddressAtIndex(int i) const {
+    //assert(i >= 0 && i < vFoundersRewardAddress.size());
+    return vFoundersRewardAddress[0];
 }
